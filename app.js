@@ -23,9 +23,10 @@ const handlePageLoaded = async () => {
   try {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=15&offset=0');
 
-    if (!response.ok) throw Error ('Não foi possível obter as informações')
+    if (!response.ok) throw Error('Não foi possível obter as informações');
 
-    console.log(response);
+    const { results: pokeApiResults } = await response.json();
+    console.log(pokeApiResults);
   } catch (error) {
     console.log('Algo deu errado', error);
   }
