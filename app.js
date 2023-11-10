@@ -26,7 +26,11 @@ const handlePageLoaded = async () => {
     if (!response.ok) throw Error('Não foi possível obter as informações');
 
     const { results: pokeApiResults } = await response.json();
-    console.log(pokeApiResults);
+    const promises = pokeApiResults.map(result => fetch(result.url));
+    const responses = await Promise.allSettled(promises);
+    const fulfilled = responses.filter(response => response.status === 'fulfilled');
+
+    console.log(responses);
   } catch (error) {
     console.log('Algo deu errado', error);
   }
