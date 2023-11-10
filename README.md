@@ -1,3 +1,3 @@
 # Pokédex com JavaScript puro
  
-<a href="https://emersonthiago168.github.io/pokedex/">Link</a>
+<a href="https://emersonthiago168.github.io/pokedex/">Acessar</a>
