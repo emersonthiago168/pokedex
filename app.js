@@ -19,6 +19,20 @@ const getTypeColor = type => {
   }[type] || normal
 }
 
+const getPokemonType = async pokeApiResults => {
+  const promises = pokeApiResults.map(result => fetch(result.url));
+  const responses = await Promise.allSettled(promises);
+  const fulfilled = responses.filter(response => response.status === 'fulfilled');
+  const pokePromises = fulfilled.map(url => url.value.json());
+  const pokemons = await Promise.all(pokePromises);
+  return pokemons.map(fulfilled => fulfilled.types.map(info => info.type.name));
+}
+
+const getPokemonsIds = pokeApiResults => pokeApiResults.map(({ url }) => {
+  const urlAsAray = url.split('/');
+  return urlAsAray.at(urlAsAray.length - 2);
+});
+
 const handlePageLoaded = async () => {
   try {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=15&offset=0');
@@ -26,11 +40,11 @@ const handlePageLoaded = async () => {
     if (!response.ok) throw Error('Não foi possível obter as informações');
 
     const { results: pokeApiResults } = await response.json();
-    const promises = pokeApiResults.map(result => fetch(result.url));
-    const responses = await Promise.allSettled(promises);
-    const fulfilled = responses.filter(response => response.status === 'fulfilled');
+    const types = await getPokemonType(pokeApiResults);
+    const ids = getPokemonsIds(pokeApiResults);
+    const promises = ids.map(id => fetch(`./assets/img/${id}.png`));
 
-    console.log(responses);
+    console.log(ids);
   } catch (error) {
     console.log('Algo deu errado', error);
   }
