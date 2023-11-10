@@ -1,2 +1,2 @@
-# pokedex
+# Pokédex com JavaScript puro
  
