@@ -33,7 +33,7 @@ const getPokemonType = async pokeApiResults => {
 }
 
 const getPokemonsIds = pokeApiResults => pokeApiResults.map(({ url }) => {
-  const urlAsAray = DOMPurify.sanitize(url.split('/'));
+  const urlAsAray = DOMPurify.sanitize(url).split('/');
   return urlAsAray.at(urlAsAray.length - 2);
 })
 
@@ -62,6 +62,7 @@ const getPokemons = async () => {
 
 const renderPokemon = pokemons => {
   const ul = document.querySelector('[data-js="pokemons-list"]');
+  const fragment = document.createDocumentFragment();
 
   pokemons.forEach(({ id, name, types, imgUrl }) => {
     const li = document.createElement('li');
@@ -72,6 +73,7 @@ const renderPokemon = pokemons => {
 
     img.setAttribute('src', imgUrl);
     img.setAttribute('alt', name);
+    img.setAttribute('class', 'card-image');
     li.setAttribute('class', `card ${firstType}`);
     li.style.setProperty('--type-color', getTypeColor(firstType));
 
@@ -79,17 +81,17 @@ const renderPokemon = pokemons => {
     typeContainer.textContent = types.length > 1 ? types.join(' | ') : firstType;
     li.append(img, nameContainer, typeContainer);
 
-    ul.append(li)
+    fragment.append(li);
   });
 
-
+  ul.append(fragment);
 }
 
 const handlePageLoaded = async () => {
   const pokemons = await getPokemons();
-  renderPokemon(pokemons);
 
-  console.log(pokemons);
+  renderPokemon(pokemons);
+  handleNextPokemonsRender();
 }
 
 handlePageLoaded();
