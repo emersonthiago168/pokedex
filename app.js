@@ -76,10 +76,10 @@ const renderPokemon = pokemons => {
     li.style.setProperty('--type-color', getTypeColor(firstType));
 
     nameContainer.textContent = `${id}. ${name[0].toUpperCase()}${name.slice(1)}`;
-    typeContainer.textContent = types.lenght > 1 ? types.join(' | ') : firstType;
-    li.append(img, nameContainer, typeContainer)
+    typeContainer.textContent = types.length > 1 ? types.join(' | ') : firstType;
+    li.append(img, nameContainer, typeContainer);
 
-    console.log(li);
+    ul.append(li)
   });
 
 
@@ -88,6 +88,8 @@ const renderPokemon = pokemons => {
 const handlePageLoaded = async () => {
   const pokemons = await getPokemons();
   renderPokemon(pokemons);
+
+  console.log(pokemons);
 }
 
 handlePageLoaded();
