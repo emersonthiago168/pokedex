@@ -112,7 +112,7 @@ const handleNextPokemonsRender = () => {
 
     observer.unobserve(lastPokemon.target);
 
-    if (paginationInfo.getOffset === 150) return;
+    if (paginationInfo.getOffset === 151) return;
 
     const pokemons = await getPokemons();
     renderPokemon(pokemons);
